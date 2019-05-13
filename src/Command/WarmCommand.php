@@ -8,6 +8,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class WarmCommand
 {
+    const DATE_FORMAT = 'Y-m-d H:i:s';
+
     /**
      * @var WebsiteManager
      */
@@ -41,6 +43,10 @@ class WarmCommand
 
             foreach ($pages as $page) {
                 $warmer->warm($page->getUrl());
+                $updated = $this->pageManager->updateLastPageVisit($page, date(self::DATE_FORMAT, time()));
+                if (!$updated) {
+                    $output->writeln('<error>Error updating page with ID ' . $page->getPageId() . '</error>');
+                }
             }
         } else {
             $output->writeln('<error>Website with ID ' . $id . ' does not exists!</error>');
