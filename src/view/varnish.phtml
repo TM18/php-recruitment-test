@@ -1,0 +1,75 @@
+<?php /** @var \Snowdog\DevTest\Controller\VarnishesAction $this */ ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Varnishes - Cache Warmer</title>
+
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/style.css" rel="stylesheet">
+</head>
+
+<body>
+
+<?php \Snowdog\DevTest\Component\Menu::getInstance()->render() ?>
+
+<div class="container">
+
+    <?php if (isset($_SESSION['flash'])): ?>
+        <p class="bg-info"><?= $_SESSION['flash'] ?></p>
+        <?php unset($_SESSION['flash']) ?>
+    <?php endif ?>
+
+    <div>
+
+        <div class="padded">
+            <form class="form-inline" method="post" action="/varnish">
+                <div class="form-group">
+                    <label for="exampleInputName2">IP</label>
+                    <input type="text" name="ip" class="form-control" id="exampleInputName2"
+                           placeholder="192.168.0.1">
+                </div>
+                <button type="submit" class="btn btn-primary">Add Varnish</button>
+            </form>
+        </div>
+
+        <div class="padded">
+            <h1>Varnish Assignments</h1>
+        </div>
+
+        <?php foreach ($this->getVarnishes() as $varnish): /** @var \Snowdog\DevTest\Model\Varnish $varnish */ ?>
+            <?php $websiteIds = $this->getAssignedWebsiteIds($varnish) ?>
+            <h2><?= $varnish->getIP() ?></h2>
+
+            <div class="padded">
+                <table class="table table-striped">
+                    <tr>
+                        <th>Associated</th>
+                        <th>Name</th>
+                        <th>Hostname</th>
+                    </tr>
+                    <?php foreach ($this->getWebsites() as $website): /** @var \Snowdog\DevTest\Model\Website $website */ ?>
+                        <tr>
+                            <td><input type="checkbox" <?= in_array($website->getWebsiteId(), $websiteIds) ? 'checked="checked"' : '' ?>/></td>
+                            <td><?= $website->getName() ?></td>
+                            <td><?= $website->getHostname() ?></td>
+                        </tr>
+                    <?php endforeach ?>
+                </table>
+            </div>
+
+        <?php endforeach; ?>
+    </div>
+
+</div><!-- /.container -->
+
+
+</body>
+</html>
