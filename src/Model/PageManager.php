@@ -50,4 +50,69 @@ class PageManager
         $statement->bindParam(':page_id', $page->getPageId(), \PDO::PARAM_INT);
         return $statement->execute();
     }
+
+    /**
+     * @param User $user
+     * @return array
+     */
+    public function getStats(User $user): array
+    {
+        $userId = $user->getUserId();
+
+        return [
+            'Total count' => $this->getPagesCount($userId),
+            'Most recently visited' => $this->getMostRecentlyVisited($userId),
+            'Least recently visited' => $this->getLeastRecentlyVisited($userId)
+        ];
+    }
+
+    /**
+     * @param int $userId
+     * @return int
+     */
+    public function getPagesCount(int $userId): int
+    {
+        $query = $this->database->prepare('SELECT count(1) FROM websites AS w LEFT JOIN pages AS p ON p.website_id = w.website_id WHERE w.user_id = :user_id');
+        $query->bindParam('user_id', $userId, \PDO::PARAM_INT);
+        $query->execute();
+        return $query->fetchColumn();
+    }
+
+    /**
+     * @param int $userId
+     * @return string
+     */
+    public function getMostRecentlyVisited(int $userId): string
+    {
+        $query = $this->database->prepare('SELECT w.hostname, p.url FROM websites AS w LEFT JOIN pages AS p ON w.website_id = p.website_id WHERE w.user_id = :user_id AND p.last_page_visit IS NOT NULL ORDER BY p.last_page_visit DESC LIMIT 1');
+        return $this->getRecentlyVisited($query, $userId);
+    }
+
+    /**
+     * @param int $userId
+     * @return string
+     */
+    public function getLeastRecentlyVisited(int $userId): string
+    {
+        $query = $this->database->prepare('SELECT w.hostname, p.url FROM websites AS w LEFT JOIN pages AS p ON w.website_id = p.website_id WHERE w.user_id = :user_id AND p.last_page_visit IS NOT NULL ORDER BY p.last_page_visit ASC LIMIT 1');
+        return $this->getRecentlyVisited($query, $userId);
+    }
+
+    /**
+     * @param \PDOStatement $query
+     * @param int $userId
+     * @return string
+     */
+    private function getRecentlyVisited(\PDOStatement $query, int $userId): string
+    {
+        $query->bindParam(':user_id', $userId, \PDO::PARAM_INT);
+        $query->execute();
+        $result = $query->fetch();
+
+        if (isset($result['hostname']) && isset($result['url'])) {
+            return sprintf('%s/%s', $result['hostname'], $result['url']);
+        }
+
+        return '';
+    }
 }

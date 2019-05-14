@@ -65,6 +65,12 @@
                     <?php endforeach ?>
                 </table>
             </div>
+
+            <div class="padded">
+                <?php foreach ($this->getStats() as $key => $value): ?>
+                    <p><?= $key ?>: <strong><?= $value ?: '-' ?></strong></p>
+                <?php endforeach; ?>
+            </div>
         <?php endif ?>
     </div>
 
