@@ -45,9 +45,10 @@ class PageManager
      */
     public function updateLastPageVisit(Page $page, string $date): bool
     {
+        $pageId = $page->getPageId();
         $statement = $this->database->prepare('UPDATE pages SET last_page_visit = :date WHERE page_id = :page_id');
         $statement->bindParam(':date', $date, \PDO::PARAM_STR);
-        $statement->bindParam(':page_id', $page->getPageId(), \PDO::PARAM_INT);
+        $statement->bindParam(':page_id', $pageId, \PDO::PARAM_INT);
         return $statement->execute();
     }
 
