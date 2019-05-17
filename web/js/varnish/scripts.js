@@ -2,13 +2,13 @@ const validate = () => {
     let ipAddress = document.getElementById('ip');
 
     if (ipAddress.value === "") {
-        ipAddress.classList.add('invalid-ip');
+        ipAddress.classList.add('invalid');
         addAlert('danger', 'IP address cannot be empty.');
         return false;
     }
 
     if (!validateIpAddress(ipAddress.value)) {
-        ipAddress.classList.add('invalid-ip');
+        ipAddress.classList.add('invalid');
         addAlert('danger', 'IP address is invalid.');
         return false;
     }
@@ -42,15 +42,4 @@ const toggleVarnishLink = (varnishId, websiteId, elem) => {
         }
     };
     req.send(JSON.stringify({varnishId: varnishId, websiteId: websiteId, isLinked: !elem.checked}));
-};
-
-const addAlert = (type, msg) => {
-    let alert = document.createElement('div');
-    alert.classList.add('alert', 'alert-' + type, 'alert-dismissible');
-    alert.innerHTML = `<a href="#" class="close" onclick="this.parentElement.remove(); return false;">&times;</a><span>${msg}</span>`;
-    document.getElementById('alerts').append(alert);
-
-    setTimeout(function() {
-        alert.remove();
-    }, 5000);
 };

@@ -55,7 +55,7 @@ class WarmCommand
 
             $actor = new \Old_Legacy_CacheWarmer_Actor();
             $actor->setActor(function ($hostname, $ip, $url) use ($output) {
-                $output->writeln('Visited <info>http://' . $hostname . '/' . $url . '</info> via IP: <comment>' . $ip . '</comment>');
+                $output->writeln('Visited <info>http://' . $hostname . '/' . ($url != '/' ? $url : '') . '</info> via IP: <comment>' . $ip . '</comment>');
             });
             $warmer = new \Old_Legacy_CacheWarmer_Warmer();
             $warmer->setHostname($website->getHostname());

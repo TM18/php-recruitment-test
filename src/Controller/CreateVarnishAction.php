@@ -10,7 +10,7 @@ use Snowdog\DevTest\Model\VarnishManager;
  * Class CreateVarnishAction
  * @package Snowdog\DevTest\Controller
  */
-class CreateVarnishAction
+class CreateVarnishAction extends AbstractAction
 {
     /**
      * @var UserManager
@@ -55,18 +55,5 @@ class CreateVarnishAction
 
         $created = $this->varnishManager->create($this->user, $ip);
         return $this->redirect('/varnish', $created ? 'Varnish added.' : 'Error while adding varnish.');
-    }
-
-    /**
-     * @param string $location
-     * @param string $msg
-     */
-    private function redirect(string $location, string $msg = '')
-    {
-        if (!empty($msg)) {
-            $_SESSION['flash'] = $msg;
-        }
-
-        return header("Location: $location");
     }
 }

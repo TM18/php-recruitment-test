@@ -3,7 +3,8 @@
   "require": {
     "mnapoli/silly": "^1.3",
     "nikic/fast-route": "^1.0",
-    "php-di/php-di": "^5.3"
+    "php-di/php-di": "^5.3",
+    "tm/php-sitemap-importer": "^1.0"
   },
   "autoload": {
     "psr-4": {
@@ -15,5 +16,11 @@
     "classmap": [
       "lib/"
     ]
-  }
+  },
+  "repositories": [
+    {
+    "type": "vcs",
+    "url": "https://github.com/TM18/php-sitemap-importer"
+    }
+  ]
 }

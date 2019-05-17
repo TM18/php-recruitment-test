@@ -16,3 +16,20 @@ body {
 .padded {
     padding: 15px;
 }
+
+#alerts {
+    width: 400px;
+    position: fixed;
+    top: 50px;
+    right: 10px;
+}
+
+.alert {
+    margin-bottom: 0;
+    width: 300px;
+    float: right;
+}
+
+.invalid {
+    border-color: red;
+}
