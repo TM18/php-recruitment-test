@@ -7,7 +7,7 @@ use Snowdog\DevTest\Model\Varnish;
 use Snowdog\DevTest\Model\VarnishManager;
 use Snowdog\DevTest\Model\WebsiteManager;
 
-class VarnishesAction
+class VarnishesAction extends AbstractAction
 {
     /**
      * @var UserManager
@@ -61,7 +61,11 @@ class VarnishesAction
         return $ids;
     }
 
-    public function execute() {
+    public function execute()
+    {
+        if (!$this->user) {
+            return $this->redirect('/login');
+        }
 
         include __DIR__ . '/../view/varnish.phtml';
     }

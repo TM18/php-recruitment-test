@@ -20,4 +20,12 @@ class AbstractAction
 
         return header("Location: $location");
     }
+
+    /**
+     * @return int
+     */
+    protected function forbidden(): int
+    {
+        return http_response_code(403);
+    }
 }

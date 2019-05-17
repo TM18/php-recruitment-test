@@ -5,7 +5,7 @@ namespace Snowdog\DevTest\Controller;
 use Snowdog\DevTest\Model\User;
 use Snowdog\DevTest\Model\UserManager;
 
-class LoginAction
+class LoginAction extends AbstractAction
 {
     /**
      * @var UserManager
@@ -19,6 +19,10 @@ class LoginAction
 
     public function execute()
     {
+        if (isset($_SESSION['login'])) {
+            return $this->forbidden();
+        }
+
         $login = $_POST['login'];
         $password = $_POST['password'];
 

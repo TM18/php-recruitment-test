@@ -7,7 +7,7 @@ use Snowdog\DevTest\Model\User;
 use Snowdog\DevTest\Model\UserManager;
 use Snowdog\DevTest\Model\WebsiteManager;
 
-class IndexAction
+class IndexAction extends AbstractAction
 {
 
     /**
@@ -56,6 +56,10 @@ class IndexAction
 
     public function execute()
     {
+        if (!$this->user) {
+            return $this->redirect('/login');
+        }
+
         require __DIR__ . '/../view/index.phtml';
     }
 }

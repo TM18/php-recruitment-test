@@ -31,4 +31,11 @@ class VarnishesMenu extends AbstractMenu
     {
         return 'Varnishes';
     }
+
+    public function __invoke()
+    {
+        if (isset($_SESSION['login'])) {
+            parent::__invoke();
+        }
+    }
 }

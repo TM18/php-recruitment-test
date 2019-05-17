@@ -29,3 +29,7 @@ switch ($route[0]) {
         $container->call($controller, $parameters);
         break;
 }
+
+if (http_response_code() === 403) {
+    require __DIR__ . '/../src/view/403.phtml';
+}
